@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JAE Technical Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout: six hash-routed pages in one clean column; navy + red on white, square edges, thin rules, large readable type */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --soft: #f3f5f9;
+  --ink: #15213a;
+  --muted: #4a5670;
+  --navy: #1c3466;
+  --navy-ink: #ffffff;
+  --red: #b3261e;
+  --red-ink: #ffffff;
+  --line: #d6dce8;
+  --font: "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1626; --surface: #151e33; --soft: #131b2e; --ink: #edf1f8; --muted: #b0bbd0;
+    --navy: #91b0ea; --navy-ink: #0f1626; --red: #ee7d73; --red-ink: #1a0b0a;
+    --line: #2b3956; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1626; --surface: #151e33; --soft: #131b2e; --ink: #edf1f8; --muted: #b0bbd0;
+  --navy: #91b0ea; --navy-ink: #0f1626; --red: #ee7d73; --red-ink: #1a0b0a;
+  --line: #2b3956; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 1.15rem; line-height: 1.65; }
+.wrap {
+  max-width: 62rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.1rem); }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; max-width: 62ch; }
+a { color: var(--navy); }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+
+/* Header */
+.stripe { height: 6px; background: linear-gradient(to right, var(--navy) 0 50%, var(--red) 50%); }
+header { background: var(--surface); border-bottom: 1px solid var(--line); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-block: 14px; }
+.brand { font-weight: 700; font-size: 1.25rem; text-decoration: none; color: var(--navy); letter-spacing: .01em; }
+.brand span { color: var(--red); font-weight: 600; }
+nav { display: flex; flex-wrap: wrap; gap: 2px; }
+nav a { text-decoration: none; color: var(--ink); font-weight: 600; padding: 10px 12px; font-size: 1.05rem; border-bottom: 3px solid transparent; }
+nav a:hover { color: var(--navy); }
+nav a[aria-current="page"] { color: var(--navy); border-bottom-color: var(--red); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 12px 24px; border-radius: 4px;
+  font: 600 1.15rem var(--font); text-decoration: none; cursor: pointer; border: 2px solid var(--red);
+}
+.btn-primary { background: var(--red); color: var(--red-ink); }
+.btn-ghost { background: transparent; color: var(--navy); border-color: var(--navy); }
+.btn:hover { filter: brightness(1.08); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .85rem; font-weight: 700; color: var(--red); }
+
+/* Hero */
+.hero { padding-block: clamp(40px, 7vw, 76px); display: grid; gap: 40px; grid-template-columns: 1.35fr 1fr; align-items: center; }
+.hero > * { min-width: 0; }
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); margin-top: 12px; color: var(--navy); }
+.hero h1 em { font-style: normal; color: var(--red); }
+.lead { font-size: 1.25rem; color: var(--muted); margin-top: 18px; }
+.tip { border: 1px solid var(--line); border-top: 4px solid var(--navy); padding: 24px; background: var(--surface); }
+.tip h3 { color: var(--navy); margin-bottom: 10px; }
+.tip ul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+.tip small { display: block; margin-top: 12px; color: var(--muted); font-size: .95rem; }
+
+section { padding-block: clamp(44px, 7vw, 70px); }
+.band { background: var(--soft); border-block: 1px solid var(--line); }
+.section-head { display: grid; gap: 8px; margin-bottom: 28px; }
+.section-head p { color: var(--muted); }
+.page-head { padding-block: clamp(36px, 6vw, 56px) 0; display: grid; gap: 10px; }
+.page-head h1 { font-size: clamp(2rem, 4.5vw, 2.7rem); color: var(--navy); }
+.page-head p { color: var(--muted); font-size: 1.2rem; }
+
+/* Device list on home */
+.devlist { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--surface); }
+.devlist a { padding: 16px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); font-weight: 600; display: flex; justify-content: space-between; gap: 10px; }
+.devlist a::after { content: "→"; color: var(--red); }
+.devlist a:hover { background: var(--soft); color: var(--navy); }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); counter-reset: step; }
+.steps li { counter-increment: step; display: grid; gap: 6px; align-content: start; border-top: 2px solid var(--navy); padding-top: 14px; }
+.steps li::before { content: "Step " counter(step); font-size: .85rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
+.steps p { color: var(--muted); font-size: 1.05rem; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.two > * { min-width: 0; }
+.stack { display: grid; gap: 16px; }
+.pull { border-left: 3px solid var(--red); padding: 4px 0 4px 20px; font-size: 1.25rem; font-weight: 600; color: var(--navy); }
+
+.promises { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 32px; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+.promises li { padding: 16px 0 16px 34px; border-bottom: 1px solid var(--line); position: relative; }
+.promises li::before { content: "✓"; position: absolute; left: 0; top: 15px; color: var(--red); font-weight: 700; font-size: 1.2rem; }
+.promises strong { display: block; font-weight: 600; }
+.promises .d { color: var(--muted); font-size: 1.05rem; }
+
+.topics { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 6px; }
+.topics li { padding-left: 18px; position: relative; }
+.topics li::before { content: ""; position: absolute; left: 0; top: .7em; width: 8px; height: 8px; background: var(--red); }
+.panel { background: var(--surface); border: 1px solid var(--line); padding: 26px; display: grid; gap: 12px; }
+.label { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; color: var(--muted); }
+.towns { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: 1.1rem; }
+
+/* Services */
+.devices { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 32px 40px; }
+.device { display: grid; gap: 8px; align-content: start; border-top: 2px solid var(--navy); padding-top: 16px; }
+.device h2 { font-size: 1.35rem; color: var(--navy); }
+.device ul { margin: 0; padding-left: 1.2em; display: grid; gap: 3px; font-size: 1.05rem; }
+
+/* Rates */
+.rates { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 18px; }
+.rate { padding: 28px; display: grid; gap: 6px; align-content: start; border: 1px solid var(--line); background: var(--surface); }
+.rate.main { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
+.rate.main .label { color: var(--navy-ink); opacity: .85; }
+.rate .amt { font-size: 3.2rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.rate .amt small { font-size: 1.1rem; font-weight: 600; }
+.rate h2 { font-size: 1.25rem; font-weight: 600; }
+.rate p { font-size: 1.05rem; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; max-width: 34rem; font-size: 1.1rem; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+th { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; text-align: right; }
+td.num { font-weight: 600; }
+.fineprint { color: var(--muted); font-size: 1.05rem; margin-top: 18px; display: grid; gap: 8px; }
+
+/* About */
+.about { display: grid; grid-template-columns: 16rem 1fr; gap: 40px; align-items: start; }
+.about > * { min-width: 0; }
+.photo { aspect-ratio: 4 / 5; max-width: 100%; border: 1px dashed var(--line); background: var(--soft); display: grid; place-items: center; text-align: center; color: var(--muted); font-size: 1rem; padding: 16px; }
+.facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.facts li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.facts span:first-child { color: var(--muted); }
+.facts span:last-child { font-weight: 600; }
+
+/* Reviews */
+.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 20px; }
+.review { border: 1px solid var(--line); background: var(--surface); padding: 22px; display: grid; gap: 10px; align-content: start; }
+.stars { color: var(--red); letter-spacing: 2px; font-size: 1.1rem; }
+.review .who { color: var(--muted); font-size: 1rem; font-weight: 600; }
+.empty { border: 1px dashed var(--line); padding: 28px; color: var(--muted); display: grid; gap: 8px; }
+.empty strong { color: var(--ink); }
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: start; }
+.contact-grid > * { min-width: 0; }
+form { display: grid; gap: 22px; }
+fieldset { border: 1px solid var(--line); padding: 20px; margin: 0; display: grid; gap: 16px; background: var(--surface); }
+legend { font-weight: 700; font-size: 1.15rem; color: var(--navy); padding: 0 8px; }
+.field { display: grid; gap: 6px; }
+.field label, .q { font-weight: 600; }
+.hint { color: var(--muted); font-size: 1rem; font-weight: 400; }
+input[type=text], input[type=tel], input[type=email], select, textarea {
+  font: 1.1rem var(--font); padding: 12px 14px; border: 1px solid var(--muted); border-radius: 4px;
+  background: var(--bg); color: var(--ink); width: 100%; min-height: 52px;
+}
+textarea { min-height: 130px; resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: var(--navy); outline: 2px solid var(--navy); outline-offset: 0; }
+.options { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 4px; cursor: pointer; background: var(--bg); }
+.opt input { width: 22px; height: 22px; accent-color: var(--navy); flex: none; }
+.opt:has(input:checked) { border-color: var(--navy); background: var(--soft); }
+.req { color: var(--red); }
+.error { color: var(--red); font-weight: 600; }
+.result { border: 1px solid var(--navy); padding: 22px; background: var(--soft); display: grid; gap: 12px; }
+.result pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 var(--font); background: var(--surface); border: 1px solid var(--line); padding: 14px; margin: 0; max-height: 18rem; overflow: auto; }
+.phone-num { font-size: clamp(1.6rem, 4.5vw, 2rem); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--navy); user-select: all; overflow-wrap: anywhere; }
+.email { font-size: 1.05rem; overflow-wrap: anywhere; user-select: all; }
+.small-btn { justify-self: start; min-height: 46px; padding: 8px 16px; border-radius: 4px; border: 1px solid var(--navy); background: transparent; color: var(--navy); font: 600 1rem var(--font); cursor: pointer; }
+
+footer { padding-block: 26px; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); margin-top: 40px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+@media (max-width: 760px) {
+  .hero, .two, .contact-grid, .about { grid-template-columns: 1fr; }
+  .photo { max-width: 14rem; }
+  .cta .btn { width: 100%; }
+}
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="stripe" aria-hidden="true"></div>
+<header>
+  <div class="wrap top">
+    <a class="brand" href="#home">JAE <span>Technical Services</span></a>
+    <nav aria-label="Main">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#services" data-nav="services">Services</a>
+      <a href="#rates" data-nav="rates">Rates</a>
+      <a href="#about" data-nav="about">About</a>
+      <a href="#reviews" data-nav="reviews">Reviews</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- HOME -->
+<div data-view="home">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">Serving Southside Virginia</div>
+      <h1>Friendly, patient tech help for you and your family. <em>We come to YOU.</em></h1>
+      <p class="lead">Computers, phones, tablets, printers, Wi-Fi, smart TVs, and smart home devices. I'll sit down with you at your kitchen table, fix what's wrong, and show you how it works. No rushing and no jargon.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#contact">Request a visit</a>
+        <a class="btn btn-ghost" href="#rates">See our rates</a>
+      </div>
+    </div>
+    <aside class="tip" aria-label="Scam safety tip">
+      <h3>A good rule to keep by the phone</h3>
+      <ul>
+        <li>Microsoft and Apple will never call you about a virus.</li>
+        <li>Your bank will never ask for your password.</li>
+        <li>No real business wants gift cards as payment.</li>
+        <li>When in doubt, hang up and call me.</li>
+      </ul>
+      <small>Clip this out and stick it on the fridge.</small>
+    </aside>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I work on</h2>
+        <p>Fair prices by the hour. Choose a topic to see what I can do.</p>
+      </div>
+      <div class="devlist">
+        <a href="#services">Desktops</a><a href="#services">Laptops</a><a href="#services">Tablets</a><a href="#services">Phones</a><a href="#services">Printers</a><a href="#services">Wi-Fi</a><a href="#services">Smart TVs</a><a href="#services">Smart home</a><a href="#services">File backup &amp; transfer</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><h2>How a visit works</h2></div>
+      <ol class="steps">
+        <li><h3>Reach out</h3><p>Fill out the short questionnaire or call. We'll pick a time that suits you.</p></li>
+        <li><h3>I come to you</h3><p>I'll arrive on time and bring what I need. No hauling your computer anywhere.</p></li>
+        <li><h3>We fix it together</h3><p>I explain each step in plain English and take as long as you need.</p></li>
+        <li><h3>You keep a written note</h3><p>Before I leave, you get a simple summary of what I did and how to do it again.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div class="stack">
+        <h2>Live too far away to fix Mom's iPad?</h2>
+        <p>I'll go to her, sort out whatever's wrong, and make sure she's protected from scam calls and emails. Afterward, I can send you a short update so you know everything is taken care of.</p>
+        <p>You can request and pay for a visit from anywhere. Your parent just has to open the door.</p>
+      </div>
+      <p class="pull">Fewer "the computer is broken again" phone calls for you. More patience and less frustration for them.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>My promises to you</h2>
+        <p>These are firm rules, so you never have to wonder.</p>
+      </div>
+      <ul class="promises">
+        <li><strong>Fair prices by the hour</strong><span class="d">Simple hourly rates with no surprise fees.</span></li>
+        <li><strong>Your passwords stay yours</strong><span class="d">I'll help you set them up, but I never keep or write them down.</span></li>
+        <li><strong>Hands off your money</strong><span class="d">I never log into your bank or handle payments on your behalf.</span></li>
+        <li><strong>No rushing, no talking down</strong><span class="d">Every question is a good question.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div>
+        <h2>Tech Talk &amp; Coffee</h2>
+        <p style="margin-top:14px">Group sessions for retirement communities, senior centers, churches, and clubs. Bring your phone or tablet and your questions. I'll bring the coffee.</p>
+        <ul class="topics" aria-label="Popular session topics">
+          <li>Spotting scam calls and texts</li><li>Video calling family</li><li>Using your patient portal</li><li>Taking and sharing photos</li><li>Making text bigger</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="label">For activity directors</div>
+        <p>Looking for a useful program for your residents or members? Get in touch to set up a session.</p>
+        <a class="btn btn-primary" href="#contact">Book a session</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Where I travel</h2>
+        <p>Based in Farmville. If you don't see your town, just ask.</p>
+      </div>
+      <div class="towns">
+        <span>Farmville</span><span>Prince Edward</span><span>Cumberland</span><span>Buckingham</span><span>Amelia</span><span>Nottoway</span><span>Charlotte</span><span>Lunenburg</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SERVICES -->
+<div data-view="services" hidden>
+  <div class="wrap page-head">
+    <div class="eyebrow">Services</div>
+    <h1>Everything I can help with</h1>
+    <p>If it plugs in or connects to the internet, there's a good chance I can help. Don't see your problem listed? Just ask.</p>
+  </div>
+  <section>
+    <div class="wrap devices">
+      <div class="device"><h2>Desktops</h2><ul><li>Slow computer tune-ups</li><li>Virus and pop-up cleanup</li><li>Windows and Mac updates</li><li>New computer setup and moving your files</li><li>Email setup and fixes</li></ul></div>
+      <div class="device"><h2>Laptops</h2><ul><li>Setup and moving files from an old laptop</li><li>Speed and battery troubleshooting</li><li>Virus and scam cleanup</li><li>Connecting to Wi-Fi and printers</li><li>Video calling setup</li></ul></div>
+      <div class="device"><h2>Tablets</h2><ul><li>iPad and Android tablet setup</li><li>Bigger, easier-to-read text</li><li>FaceTime and video calls with family</li><li>Apps for reading, games, and news</li><li>Photo sharing with family</li></ul></div>
+      <div class="device"><h2>Phones</h2><ul><li>New phone setup and moving contacts</li><li>Photo backup so nothing gets lost</li><li>Blocking spam and scam calls</li><li>Text messaging and voicemail help</li><li>Patient portal and pharmacy apps</li></ul></div>
+      <div class="device"><h2>Printers</h2><ul><li>New printer setup</li><li>Getting the printer to talk to your computer or phone</li><li>Wireless printing</li><li>Scanning documents and photos</li><li>Fixing "printer offline" errors</li></ul></div>
+      <div class="device"><h2>Wi-Fi</h2><ul><li>New router and internet setup</li><li>Fixing weak signal in far rooms</li><li>Securing your network with a strong password</li><li>Getting every device connected</li><li>Troubleshooting dropped connections</li></ul></div>
+      <div class="device"><h2>Smart TVs</h2><ul><li>Smart TV and streaming device setup</li><li>Netflix, YouTube, and other apps</li><li>Connecting your TV to Wi-Fi</li><li>Simplifying remotes</li><li>A cheat sheet for how to turn it all on</li></ul></div>
+      <div class="device"><h2>Smart Home Installations</h2><ul><li>Video doorbells and security cameras</li><li>Smart speakers like Alexa and Google</li><li>Smart thermostats</li><li>Smart lights and plugs</li><li>Setting it all up on your phone</li></ul></div>
+      <div class="device"><h2>File Backup &amp; Transfer</h2><ul><li>Backing up photos, documents, and contacts</li><li>Moving everything from an old device to a new one</li><li>Cloud backup with iCloud, Google, or OneDrive</li><li>External drive backups</li><li>Saving files before an old computer is recycled</li></ul></div>
+    </div>
+    <div class="wrap cta"><a class="btn btn-primary" href="#contact">Request a visit</a><a class="btn btn-ghost" href="#rates">See our rates</a></div>
+  </section>
+</div>
+
+<!-- RATES -->
+<div data-view="rates" hidden>
+  <div class="wrap page-head">
+    <div class="eyebrow">Rates</div>
+    <h1>Fair prices by the hour</h1>
+    <p>One simple rate for every house call, with no surprise fees.</p>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="rates">
+        <div class="rate main">
+          <div class="label">House call</div>
+          <div class="amt">$60</div>
+          <h2>Includes the first hour</h2>
+          <p>I come to your home or business and spend up to an hour fixing, setting up, and teaching.</p>
+        </div>
+        <div class="rate">
+          <div class="label">Each additional hour</div>
+          <div class="amt">$45<small> /hr</small></div>
+          <h2>After the first hour</h2>
+          <p>For bigger jobs like a new computer setup or getting a whole house connected.</p>
+        </div>
+      </div>
+      <div class="section-head" style="margin-top:44px"><h2>What a visit costs</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Length of visit</th><th class="num">Total</th></tr></thead>
+          <tbody>
+            <tr><td>1 hour</td><td class="num">$60</td></tr>
+            <tr><td>2 hours</td><td class="num">$105</td></tr>
+            <tr><td>3 hours</td><td class="num">$150</td></tr>
+            <tr><td>4 hours</td><td class="num">$195</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fineprint">
+        <p>Most visits take about an hour. I'll let you know before going past the first hour.</p>
+        <p>Parts or equipment, like a new router or cables, are extra and only bought with your OK.</p>
+      </div>
+      <div class="cta"><a class="btn btn-primary" href="#contact">Request a visit</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ABOUT -->
+<div data-view="about" hidden>
+  <div class="wrap page-head">
+    <div class="eyebrow">About me</div>
+    <h1>Hi, I'm Jacob</h1>
+  </div>
+  <section>
+    <div class="wrap about">
+      <div class="photo">Your photo here</div>
+      <div class="stack">
+        <p>I work in IT support full time, helping people with computers, phones, networks, and security every day. JAE Technical Services is how I bring that same help to homes and small businesses around Farmville.</p>
+        <p>I started this because good tech help shouldn't mean a long drive, a phone menu, or someone talking over your head. Most problems can be fixed in an hour at your kitchen table, and you should leave knowing how to handle it next time.</p>
+        <p>I'm a Farmville local, and I treat every home I visit the way I'd want someone to treat my own family's.</p>
+        <ul class="facts">
+          <li><span>Based in</span><span>Farmville, Virginia</span></li>
+          <li><span>Background</span><span>Professional IT support</span></li>
+          <li><span>Specialty</span><span>Patient, plain-English help</span></li>
+          <li><span>Visits</span><span>Weekday evenings and Saturdays</span></li>
+        </ul>
+        <div class="cta" style="margin-top:12px"><a class="btn btn-primary" href="#contact">Request a visit</a></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- REVIEWS -->
+<div data-view="reviews" hidden>
+  <div class="wrap page-head">
+    <div class="eyebrow">Customer reviews</div>
+    <h1>What neighbors are saying</h1>
+    <p>Real reviews from people I've helped.</p>
+  </div>
+  <section>
+    <div class="wrap stack" style="gap:32px">
+      <div class="reviews" id="reviewList"></div>
+      <div class="panel" style="max-width:40rem">
+        <div class="label">Had a visit?</div>
+        <h2 style="font-size:1.5rem">Leave a review</h2>
+        <p>It takes about a minute and helps your neighbors find patient, local tech help. Thank you!</p>
+        <a class="btn btn-primary" id="reviewBtn" href="#" target="_blank" rel="noopener">Write a review</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACT -->
+<div data-view="contact" hidden>
+  <div class="wrap page-head">
+    <div class="eyebrow">Contact us</div>
+    <h1>Request a visit</h1>
+    <p>Answer a few quick questions so I know what to bring. I'll get back to you to set up a time.</p>
+  </div>
+  <section>
+    <div class="wrap contact-grid">
+      <form id="intake" novalidate>
+        <fieldset>
+          <legend>About you</legend>
+          <div class="field"><label for="f-name">Your name <span class="req">*</span></label><input id="f-name" type="text" autocomplete="name"></div>
+          <div class="field"><label for="f-phone">Phone number <span class="req">*</span></label><input id="f-phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="f-email">Email <span class="hint">(optional)</span></label><input id="f-email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="f-town">Town or county</label><input id="f-town" type="text" placeholder="For example, Farmville"></div>
+          <div class="field">
+            <span class="q">Best way to reach you</span>
+            <div class="options">
+              <label class="opt"><input type="radio" name="reach" id="r-call" value="Phone call" checked> Phone call</label>
+              <label class="opt"><input type="radio" name="reach" id="r-text" value="Text message"> Text message</label>
+              <label class="opt"><input type="radio" name="reach" id="r-email" value="Email"> Email</label>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Who is the visit for?</legend>
+          <div class="options">
+            <label class="opt"><input type="radio" name="who" id="w-me" value="Me" checked> Me</label>
+            <label class="opt"><input type="radio" name="who" id="w-family" value="A parent or family member"> A parent or family member</label>
+            <label class="opt"><input type="radio" name="who" id="w-biz" value="My business"> My business</label>
+            <label class="opt"><input type="radio" name="who" id="w-group" value="A group session"> A group session</label>
+          </div>
+          <div class="field"><label for="f-visitname">If it's for someone else, their name and town</label><input id="f-visitname" type="text"></div>
+        </fieldset>
+        <fieldset>
+          <legend>What needs help?</legend>
+          <div class="options" id="devices">
+            <label class="opt"><input type="checkbox" id="d-desktop" value="Desktop"> Desktop</label>
+            <label class="opt"><input type="checkbox" id="d-laptop" value="Laptop"> Laptop</label>
+            <label class="opt"><input type="checkbox" id="d-tablet" value="Tablet"> Tablet</label>
+            <label class="opt"><input type="checkbox" id="d-phone" value="Phone"> Phone</label>
+            <label class="opt"><input type="checkbox" id="d-printer" value="Printer"> Printer</label>
+            <label class="opt"><input type="checkbox" id="d-wifi" value="Wi-Fi"> Wi-Fi</label>
+            <label class="opt"><input type="checkbox" id="d-tv" value="Smart TV"> Smart TV</label>
+            <label class="opt"><input type="checkbox" id="d-smarthome" value="Smart home"> Smart home</label>
+            <label class="opt"><input type="checkbox" id="d-backup" value="File backup or transfer"> File backup or transfer</label>
+            <label class="opt"><input type="checkbox" id="d-other" value="Something else"> Something else</label>
+          </div>
+          <div class="field"><label for="f-problem">Tell me what's going on <span class="req">*</span><br><span class="hint">In your own words is fine. For example, "My iPad won't connect to the internet."</span></label><textarea id="f-problem"></textarea></div>
+        </fieldset>
+        <fieldset>
+          <legend>Scheduling</legend>
+          <div class="field">
+            <span class="q">Best times for a visit</span>
+            <div class="options" id="times">
+              <label class="opt"><input type="checkbox" id="t-eve" value="Weekday evenings"> Weekday evenings</label>
+              <label class="opt"><input type="checkbox" id="t-sat" value="Saturday"> Saturday</label>
+              <label class="opt"><input type="checkbox" id="t-any" value="Anytime"> Anytime</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-heard">How did you hear about us?</label>
+            <select id="f-heard">
+              <option value="">Choose one</option>
+              <option>Friend or family</option><option>Facebook</option><option>Google</option><option>Flyer</option><option>Tech Talk &amp; Coffee session</option><option>Other</option>
+            </select>
+          </div>
+        </fieldset>
+        <p class="error" id="err" hidden></p>
+        <button class="btn btn-primary" type="submit">Send my request</button>
+        <div class="result" id="result" hidden>
+          <strong>Your email app should open with your answers filled in. Tap Send to finish.</strong>
+          <p>If it didn't open, copy your answers below and email them to <span class="email" data-email></span>.</p>
+          <pre id="summary"></pre>
+          <button class="small-btn" type="button" id="copySummary">Copy my answers</button>
+        </div>
+      </form>
+      <aside class="panel">
+        <div class="label">Prefer to call?</div>
+        <div class="phone-num" id="phone">(434) 555-0100</div>
+        <button class="small-btn" id="copyPhone" type="button">Copy number</button>
+        <div class="label" style="margin-top:8px">Email</div>
+        <div class="email" data-email></div>
+        <div class="label" style="margin-top:8px">Hours</div>
+        <p>Weekday evenings and Saturdays</p>
+        <div class="label" style="margin-top:8px">Rates</div>
+        <p>$60 house call, including the first hour. $45 for each hour after that.</p>
+      </aside>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 JAE Technical Services</span>
+    <span>Friendly, patient tech help for you and your family. We come to YOU.</span>
+  </div>
+</footer>
+
+<script>
+/* ---- Edit these ---- */
+var BUSINESS_EMAIL = "jaetechservices@gmail.com";
+/* Your Google Business Profile "Ask for reviews" link */
+var REVIEW_LINK = "https://g.page/r/YOUR-LINK/review";
+/* Add reviews here as customers leave them: { name: "Mary T.", town: "Farmville", stars: 5, text: "..." } */
+var REVIEWS = [];
+/* -------------------- */
+
+document.querySelectorAll('[data-email]').forEach(function (el) { el.textContent = BUSINESS_EMAIL; });
+document.getElementById('reviewBtn').href = REVIEW_LINK;
+
+(function renderReviews() {
+  var list = document.getElementById('reviewList');
+  if (!REVIEWS.length) {
+    var e = document.createElement('div');
+    e.className = 'empty';
+    e.innerHTML = '<strong>Reviews are on the way.</strong><span>As customers share their experience, their reviews will appear here.</span>';
+    list.appendChild(e);
+    return;
+  }
+  REVIEWS.forEach(function (r) {
+    var card = document.createElement('figure');
+    card.className = 'review'; card.style.margin = '0';
+    var s = document.createElement('div'); s.className = 'stars';
+    var n = Math.max(0, Math.min(5, r.stars || 5));
+    s.textContent = '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+    s.setAttribute('aria-label', n + ' out of 5 stars');
+    var q = document.createElement('blockquote'); q.style.margin = '0'; q.textContent = '"' + r.text + '"';
+    var w = document.createElement('figcaption'); w.className = 'who'; w.textContent = r.name + (r.town ? ', ' + r.town : '');
+    card.appendChild(s); card.appendChild(q); card.appendChild(w); list.appendChild(card);
+  });
+})();
+
+var views = ['home', 'services', 'rates', 'about', 'reviews', 'contact'];
+function route() {
+  var v = (location.hash || '#home').slice(1);
+  if (views.indexOf(v) === -1) v = 'home';
+  document.querySelectorAll('[data-view]').forEach(function (el) { el.hidden = el.getAttribute('data-view') !== v; });
+  document.querySelectorAll('[data-nav]').forEach(function (a) {
+    if (a.getAttribute('data-nav') === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+route();
+
+function copyText(text, btn, label, selectEl) {
+  function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = label; }, 2000); }
+  function fallback() {
+    if (selectEl) { var r = document.createRange(); r.selectNodeContents(selectEl); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+    done('Selected. Press copy.');
+  }
+  try { navigator.clipboard.writeText(text).then(function () { done('Copied'); }, fallback); } catch (e) { fallback(); }
+}
+document.getElementById('copyPhone').addEventListener('click', function () {
+  copyText(document.getElementById('phone').textContent, this, 'Copy number', document.getElementById('phone'));
+});
+
+function val(id) { return document.getElementById(id).value.trim(); }
+function checked(containerId) {
+  return Array.prototype.map.call(document.querySelectorAll('#' + containerId + ' input:checked'), function (i) { return i.value; }).join(', ') || 'Not specified';
+}
+function radio(name) { var r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+
+document.getElementById('intake').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var err = document.getElementById('err');
+  var missing = [];
+  if (!val('f-name')) missing.push('your name');
+  if (!val('f-phone')) missing.push('a phone number');
+  if (!val('f-problem')) missing.push('what\'s going on');
+  if (missing.length) { err.textContent = 'Please add ' + missing.join(', ') + ' so I can get back to you.'; err.hidden = false; return; }
+  err.hidden = true;
+  var body =
+    'Name: ' + val('f-name') + '\n' +
+    'Phone: ' + val('f-phone') + '\n' +
+    'Email: ' + (val('f-email') || 'Not given') + '\n' +
+    'Town or county: ' + (val('f-town') || 'Not given') + '\n' +
+    'Best way to reach: ' + radio('reach') + '\n\n' +
+    'Visit is for: ' + radio('who') + '\n' +
+    (val('f-visitname') ? 'Person and town: ' + val('f-visitname') + '\n' : '') + '\n' +
+    'Devices: ' + checked('devices') + '\n' +
+    'What\'s going on:\n' + val('f-problem') + '\n\n' +
+    'Best times: ' + checked('times') + '\n' +
+    'Heard about us from: ' + (val('f-heard') || 'Not given');
+  document.getElementById('summary').textContent = body;
+  document.getElementById('result').hidden = false;
+  var href = 'mailto:' + BUSINESS_EMAIL + '?subject=' + encodeURIComponent('Visit request from ' + val('f-name')) + '&body=' + encodeURIComponent(body);
+  try { window.location.href = href; } catch (x) {}
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+document.getElementById('copySummary').addEventListener('click', function () {
+  copyText(document.getElementById('summary').textContent, this, 'Copy my answers', document.getElementById('summary'));
+});
+</script>
+
+</body>
+</html>
