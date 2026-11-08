@@ -184,6 +184,8 @@ td.num { font-weight: 600; }
 .facts span:last-child { font-weight: 600; }
 
 /* New sections */
+.included-grid { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 12px 32px; }
+.discounts .pct { font-style: normal; font-weight: 800; font-size: 1.4rem; color: var(--red); font-variant-numeric: tabular-nums; }
 .hero-note { margin-top: 14px; color: var(--muted); font-size: 1.05rem; }
 .more-link { margin-top: 24px; font-weight: 600; }
 .included { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -374,7 +376,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p>These are firm rules, so you never have to wonder.</p>
       </div>
       <ul class="promises">
-        <li><strong>Fair prices by the hour</strong><span class="d">Simple hourly rates, no surprise fees, and discounts for seniors, teachers, first responders, military, and students.</span></li>
+        <li><strong>Simple, upfront pricing</strong><span class="d">You know the cost before I start, with no travel fee within 15 miles and discounts for seniors, teachers, first responders, military, and students.</span></li>
         <li><strong>Your passwords stay yours</strong><span class="d">I'll help you set them up, but I never keep or write them down.</span></li>
         <li><strong>Hands off your money</strong><span class="d">I never log into your bank or handle payments on your behalf.</span></li>
         <li><strong>No rushing, no talking down</strong><span class="d">Every question is a good question.</span></li>
@@ -423,7 +425,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <div class="section-head">
         <h2>Where I travel</h2>
-        <p>Based in Farmville. If you don't see your town, just ask.</p>
+        <p>Based in Farmville. <strong>No travel fee within 15 miles of Farmville.</strong> Farther out? Travel can be discussed. We <strong>will</strong> make it work for you!</p>
       </div>
       <div class="towns">
         <span>Farmville</span><span>Prince Edward</span><span>Cumberland</span><span>Buckingham</span><span>Amelia</span><span>Nottoway</span><span>Charlotte</span><span>Lunenburg</span>
@@ -460,8 +462,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 <div data-view="rates" hidden>
   <div class="wrap page-head">
     <div class="eyebrow">Rates</div>
-    <h1>Fair prices by the hour</h1>
-    <p>One simple rate for every house call, with no surprise fees.</p>
+    <h1>Simple, upfront pricing</h1>
+    <p>One fair rate for every house call. You'll always know the cost before I start, with no surprises and no "we'll see."</p>
   </div>
   <section>
     <div class="wrap">
@@ -494,7 +496,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="fineprint">
         <p>Most visits take about an hour. I'll let you know before going past the first hour.</p>
         <p>Parts are not included in the hourly rate. That covers hardware upgrades like an SSD or RAM, plus equipment like a new router or cables. I only buy parts with your OK, and you pay what the parts cost.</p>
+        <p><strong>No travel fee within 15 miles of Farmville.</strong> Farther out? Travel can be discussed. We <strong>will</strong> make it work for you!</p>
       </div>
+
+      <div class="section-head" style="margin-top:52px">
+        <h2>A fair rate, and more included</h2>
+        <p>Out-of-town and big-box in-home services typically charge $99 to $250 per visit, often plus travel fees. My house calls start at $75, and every visit includes:</p>
+      </div>
+      <ul class="included included-grid">
+        <li><strong>A free phone consultation</strong> before you book, so we can talk it through first</li>
+        <li><strong>No travel fee</strong> within 15 miles of Farmville</li>
+        <li><strong>Evening and Saturday hours</strong> that fit around your day</li>
+        <li><strong>Discounts</strong> for seniors, teachers, first responders, military, and students</li>
+        <li><strong>A written note</strong> of what I did and how to do it again</li>
+        <li><strong>A digital receipt</strong> and detailed invoice, emailed on site</li>
+        <li><strong>My guarantee:</strong> if I can't fix it, you only pay the $75 house call</li>
+        <li><strong>A local, patient tech</strong> who explains everything in plain English</li>
+      </ul>
 
       <div class="rate-notes">
         <div class="panel">
@@ -510,13 +528,13 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
       <div class="section-head" style="margin-top:52px">
         <h2>Discounts</h2>
-        <p>A thank-you to the people who serve and support our community. Just mention it when you book.</p>
+        <p>A thank-you to the people who serve and support our community. Just mention it when you book. Discounts apply to labor, not parts.</p>
       </div>
       <ul class="discounts">
-        <li><strong>Senior citizens</strong><span>For our older neighbors</span></li>
-        <li><strong>Teachers &amp; school administrators</strong><span>Including school staff</span></li>
-        <li><strong>First responders &amp; military</strong><span>Active duty and veterans</span></li>
-        <li><strong>Students</strong><span>With a current student ID</span></li>
+        <li><strong>Senior citizens</strong><em class="pct">10% off</em><span>For our older neighbors</span></li>
+        <li><strong>Teachers &amp; school administrators</strong><em class="pct">10% off</em><span>Including school staff</span></li>
+        <li><strong>First responders &amp; military</strong><em class="pct">15% off</em><span>Active duty and veterans</span></li>
+        <li><strong>Students</strong><em class="pct">15% off</em><span>With a current student ID</span></li>
       </ul>
       <p class="fineprint">One discount per visit.</p>
       <div class="cta"><a class="btn btn-primary" href="#contact">Request a visit</a></div>
@@ -647,7 +665,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div><dt>Does someone need to be home during the visit?</dt><dd>Yes. Someone should be home for the whole visit so I can ask questions and show you what I did.</dd></div>
         <div><dt>How do I pay?</dt><dd>Cash, check, tap to pay, Venmo, and PayPal are all accepted. A digital receipt and detailed invoice are emailed to you on site for your records.</dd></div>
         <div><dt>Are parts included?</dt><dd>No. Parts like an SSD, RAM, or a new router are not included in the hourly rate. I only buy parts with your OK, and you pay what the parts cost.</dd></div>
-        <div><dt>Do you offer discounts?</dt><dd>Yes, for senior citizens, teachers and school administrators, first responders and military, and students. One discount per visit.</dd></div>
+        <div><dt>Do you offer discounts?</dt><dd>Yes. Seniors and teachers or school administrators get 10% off. First responders, military, and students get 15% off. Discounts apply to labor, not parts, and it's one discount per visit.</dd></div>
+        <div><dt>Do you charge for travel?</dt><dd>No travel fee within 15 miles of Farmville. Farther out? Travel can be discussed. We will make it work for you!</dd></div>
         <div><dt>How much does a Tech Talk cost?</dt><dd>Nothing. Tech Talks are free for your group, and I provide snacks and drinks for all attendees along with a PowerPoint presentation.</dd></div>
         <div><dt>Do you offer gift certificates?</dt><dd>Yes. Gift certificates are available for a house call ($75) or any dollar amount. <a href="#gift">Request one here.</a></dd></div>
         <div><dt>Do you help small businesses?</dt><dd>Yes. I help local shops and offices with computers, Wi-Fi, email, printers, and backups.</dd></div>
@@ -749,7 +768,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <label for="f-discount">Does a discount apply?</label>
             <select id="f-discount">
               <option value="">No</option>
-              <option>Senior citizen</option><option>Teacher or school administrator</option><option>First responder or military</option><option>Student</option>
+              <option>Senior citizen (10%)</option><option>Teacher or school administrator (10%)</option><option>First responder or military (15%)</option><option>Student (15%)</option>
             </select>
           </div>
           <div class="field">
