@@ -76,6 +76,8 @@ header { background: var(--surface); border-bottom: 1px solid var(--line); }
 .hours span:first-child { font-weight: 600; }
 .hours .off { color: var(--muted); }
 .phone-num { text-decoration: none; }
+.email-link { color: var(--navy); font-weight: 600; text-decoration: none; }
+.email-link:hover { text-decoration: underline; }
 nav { display: flex; flex-wrap: wrap; gap: 2px; }
 nav a { text-decoration: none; color: var(--ink); font-weight: 600; padding: 10px 12px; font-size: 1.05rem; border-bottom: 3px solid transparent; }
 nav a:hover { color: var(--navy); }
@@ -320,7 +322,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="tip-contact">
         <strong>JAE Technical Services</strong>
         <span>Call or text <a href="tel:+14348082908">(434) 808-2908</a></span>
-        <span>jaetechnicalservices@gmail.com</span>
+        <span>jacob@jaetechservices.com</span>
         <span>jaetechservices.com</span>
       </div>
       <small>Clip this out and stick it on the fridge.</small>
@@ -846,7 +848,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <a class="phone-num" id="phone" href="tel:+14348082908">(434) 808-2908</a>
         <button class="small-btn" id="copyPhone" type="button">Copy number</button>
         <div class="label" style="margin-top:8px">Email</div>
-        <div class="email" data-email></div>
+        <a class="email email-link" href="mailto:jacob@jaetechservices.com" data-email>jacob@jaetechservices.com</a>
         <div class="label" style="margin-top:8px">Hours</div>
         <ul class="hours">
           <li><span>Monday–Friday</span><span>5:30 pm–9 pm</span></li>
@@ -865,14 +867,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
 <footer>
   <div class="wrap">
-    <span>© 2026 JAE Technical Services, LLC · Farmville, Virginia</span>
-    <span>Call or text <a href="tel:+14348082908">(434) 808-2908</a> · jaetechnicalservices@gmail.com</span>
+    <span>© 2026 JAE Technical Services LLC</span>
+    <span>Call or text <a href="tel:+14348082908">(434) 808-2908</a> · jacob@jaetechservices.com</span>
   </div>
 </footer>
 
 <script>
 /* ---- Edit these ---- */
-var BUSINESS_EMAIL = "jaetechnicalservices@gmail.com";
+var BUSINESS_EMAIL = "jacob@jaetechservices.com";
 /* Web3Forms access key (free at web3forms.com). Paste it between the quotes to have the form send itself. */
 var FORM_ACCESS_KEY = "cea853a7-a6d3-4846-856e-d33a5f9a258d";
 /* Your Google Business Profile "Ask for reviews" link */
