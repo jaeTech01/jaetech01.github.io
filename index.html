@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Friendly, patient tech help for homes and small businesses in Farmville and Southside Virginia. House calls for computers, phones, tablets, Wi-Fi, printers, smart TVs, smart homes, security checkups, data recovery, and business website design.">
+<meta name="description" content="Friendly, honest tech help that comes to you. House calls for families, seniors, and small businesses in Farmville and Southside Virginia: computers, phones, tablets, Wi-Fi, security checkups, data recovery, and business websites.">
 <title>JAE Technical Services</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231c3466'/%3E%3Cpath d='M10 30 L32 12 L54 30' fill='none' stroke='%23e5524a' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='32' y='53' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='800' font-size='22' fill='%23ffffff'%3EJAE%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
@@ -185,6 +185,16 @@ td.num { font-weight: 600; }
 .facts span:first-child { color: var(--muted); }
 .facts span:last-child { font-weight: 600; }
 
+/* Mission */
+.mission-strip { background: var(--navy); color: var(--navy-ink); }
+.mission-strip .wrap { padding-block: 18px; }
+.mission-strip p { max-width: none; font-size: 1.2rem; font-weight: 600; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.mission-label { text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; font-weight: 700; opacity: .85; }
+.mission-strip a { color: var(--navy-ink); font-weight: 600; font-size: 1rem; text-underline-offset: 3px; }
+.mission { padding-block: 0 clamp(44px, 7vw, 70px); }
+.mission .wrap { display: grid; gap: 14px; }
+.mission blockquote { margin: 0; max-width: 52rem; border-left: 4px solid var(--red); padding: 6px 0 6px 24px; font-size: clamp(1.25rem, 2.6vw, 1.55rem); line-height: 1.5; font-weight: 600; color: var(--navy); text-wrap: pretty; }
+
 /* New sections */
 .included-grid { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 12px 32px; }
 .discounts .pct { font-style: normal; font-weight: 800; font-size: 1.4rem; color: var(--red); font-variant-numeric: tabular-nums; }
@@ -327,6 +337,12 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </div>
       <small>Clip this out and stick it on the fridge.</small>
     </aside>
+  </div>
+
+  <div class="mission-strip">
+    <div class="wrap">
+      <p><span class="mission-label">Our mission</span> Friendly, honest tech help that comes to you. <a href="#about">Read our mission &rarr;</a></p>
+    </div>
   </div>
 
   <section class="band">
@@ -600,6 +616,13 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <p>From there I moved into IT and served four years as lead help desk technician at Longwood University, training a team of student technicians and helping thousands of students, faculty, and staff with their computers, phones, and accounts. Today I run the help desk for a local power provider.</p>
         <p>I started JAE Technical Services because I kept hearing the same thing from neighbors: getting tech help means a long drive, a phone menu, or someone talking over your head. I'd rather sit down at your kitchen table, fix the problem, and make sure you know how to handle it next time.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="mission" id="mission">
+    <div class="wrap">
+      <div class="eyebrow">Our mission</div>
+      <blockquote>JAE Technical Services exists to help families, seniors, and small businesses in Southside Virginia feel confident with their technology. We bring patient, plain-English support right to your home, treat every customer like a neighbor, and always tell you the honest truth, even when that means telling you not to spend money.</blockquote>
     </div>
   </section>
 
