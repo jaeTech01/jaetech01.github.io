@@ -185,6 +185,16 @@ td.num { font-weight: 600; }
 .facts span:first-child { color: var(--muted); }
 .facts span:last-child { font-weight: 600; }
 
+/* Review form */
+.review-box { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; align-items: start; border-top: 3px solid var(--navy); padding-top: 24px; }
+.review-box > * { min-width: 0; }
+#reviewForm { display: grid; gap: 18px; }
+.stars-pick { display: grid; gap: 8px; }
+.stars-pick .stars { color: var(--red); letter-spacing: 2px; font-size: 1.15rem; min-width: 6.5em; display: inline-block; }
+.consent { align-items: flex-start; font-size: 1.05rem; }
+.consent input { margin-top: 3px; }
+@media (max-width: 760px) { .review-box { grid-template-columns: 1fr; } }
+
 /* Mission */
 .mission-strip { background: var(--navy); color: var(--navy-ink); }
 .mission-strip .wrap { padding-block: 18px; }
@@ -685,11 +695,40 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <section>
     <div class="wrap stack" style="gap:32px">
       <div class="reviews" id="reviewList"></div>
-      <div class="panel" style="max-width:40rem">
-        <div class="label">Had a visit?</div>
-        <h2 style="font-size:1.5rem">Leave a review</h2>
-        <p>It takes about a minute and helps your neighbors find patient, local tech help. Thank you!</p>
-        <a class="btn btn-primary" id="reviewBtn" href="#" target="_blank" rel="noopener">Write a review</a>
+      <div class="review-box">
+        <div class="stack" style="gap:8px">
+          <div class="label">Had a visit?</div>
+          <h2 style="font-size:1.5rem">Leave a review</h2>
+          <p>It takes about a minute and helps your neighbors find patient, local tech help. Thank you!</p>
+        </div>
+        <form id="reviewForm" novalidate>
+          <fieldset>
+            <legend>How did I do? <span class="req">*</span></legend>
+            <div class="stars-pick">
+              <label class="opt"><input type="radio" name="rating" id="rt-5" value="5"> <span class="stars" aria-hidden="true">★★★★★</span> Excellent</label>
+              <label class="opt"><input type="radio" name="rating" id="rt-4" value="4"> <span class="stars" aria-hidden="true">★★★★☆</span> Good</label>
+              <label class="opt"><input type="radio" name="rating" id="rt-3" value="3"> <span class="stars" aria-hidden="true">★★★☆☆</span> Okay</label>
+              <label class="opt"><input type="radio" name="rating" id="rt-2" value="2"> <span class="stars" aria-hidden="true">★★☆☆☆</span> Not great</label>
+              <label class="opt"><input type="radio" name="rating" id="rt-1" value="1"> <span class="stars" aria-hidden="true">★☆☆☆☆</span> Poor</label>
+            </div>
+          </fieldset>
+          <div class="field"><label for="rv-text">Your review <span class="req">*</span></label><textarea id="rv-text" placeholder="What did I help with, and how did it go?"></textarea></div>
+          <div class="field"><label for="rv-name">Your name <span class="req">*</span></label><input id="rv-name" type="text" autocomplete="name"></div>
+          <div class="field"><label for="rv-town">Your town <span class="hint">(optional)</span></label><input id="rv-town" type="text" placeholder="For example, Farmville"></div>
+          <label class="opt consent"><input type="checkbox" id="rv-ok" checked> It's OK to post my review on this website with my first name, last initial, and town.</label>
+          <input type="checkbox" name="botcheck" id="rv-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+          <p class="error" id="rv-err" hidden></p>
+          <button class="btn btn-primary" type="submit" id="rv-send">Send my review</button>
+          <div class="result" id="rv-sent" hidden tabindex="-1">
+            <strong>Thank you! Your review was sent.</strong>
+            <p>New reviews are added to the website within a few days.</p>
+            <p id="rv-google" hidden>Would you also share it on Google? It helps your neighbors find me. <a id="rv-google-link" href="#" target="_blank" rel="noopener">Post on Google</a></p>
+          </div>
+          <div class="result" id="rv-fail" hidden>
+            <strong>Sorry, your review couldn't be sent just now.</strong>
+            <p>Please try again in a few minutes, or email it to <a href="mailto:jacob@jaetechservices.com">jacob@jaetechservices.com</a>.</p>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -907,12 +946,55 @@ var REVIEWS = [];
 /* -------------------- */
 
 document.querySelectorAll('[data-email]').forEach(function (el) { el.textContent = BUSINESS_EMAIL; });
+/* Review form: sends each review to your inbox through Web3Forms. Nothing is posted until you add it to REVIEWS. */
 (function () {
-  var btn = document.getElementById('reviewBtn');
-  if (REVIEW_LINK.indexOf('YOUR-LINK') !== -1) {
-    /* No review link yet: send people to the contact page instead of a dead link */
-    btn.href = '#contact'; btn.removeAttribute('target'); btn.textContent = 'Tell me how I did';
-  } else { btn.href = REVIEW_LINK; }
+  var form = document.getElementById('reviewForm');
+  var hasGoogle = REVIEW_LINK.indexOf('YOUR-LINK') === -1;
+  if (hasGoogle) document.getElementById('rv-google-link').href = REVIEW_LINK;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var err = document.getElementById('rv-err'), sent = document.getElementById('rv-sent'), fail = document.getElementById('rv-fail');
+    var btn = document.getElementById('rv-send');
+    var rating = (document.querySelector('input[name="rating"]:checked') || {}).value;
+    var text = document.getElementById('rv-text').value.trim();
+    var name = document.getElementById('rv-name').value.trim();
+    var town = document.getElementById('rv-town').value.trim();
+    var ok = document.getElementById('rv-ok').checked;
+    var missing = [];
+    if (!rating) missing.push('a star rating');
+    if (!text) missing.push('your review');
+    if (!name) missing.push('your name');
+    if (missing.length) { err.textContent = 'Please add ' + missing.join(', ') + '.'; err.hidden = false; return; }
+    err.hidden = true; sent.hidden = true; fail.hidden = true;
+    if (document.getElementById('rv-botcheck').checked) return;
+    var body =
+      'NEW WEBSITE REVIEW (not posted yet)\n\n' +
+      'Rating: ' + rating + ' out of 5\n' +
+      'Name: ' + name + '\n' +
+      'Town: ' + (town || 'Not given') + '\n' +
+      'OK to post on website: ' + (ok ? 'Yes' : 'NO, keep private') + '\n\n' +
+      'Review:\n' + text;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: FORM_ACCESS_KEY,
+        subject: 'New review from ' + name + ' (' + rating + ' stars)',
+        from_name: 'JAE Technical Services website',
+        name: name,
+        message: body
+      })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (!data || !data.success) throw new Error('not sent');
+      form.reset(); document.getElementById('rv-ok').checked = true;
+      document.getElementById('rv-google').hidden = !hasGoogle;
+      sent.hidden = false; sent.focus({ preventScroll: true });
+      sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }).catch(function () {
+      fail.hidden = false; fail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }).then(function () { btn.disabled = false; btn.textContent = 'Send my review'; });
+  });
 })();
 
 (function renderReviews() {
