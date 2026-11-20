@@ -193,6 +193,7 @@ td.num { font-weight: 600; }
 .stars-pick .stars { color: var(--red); letter-spacing: 2px; font-size: 1.15rem; min-width: 6.5em; display: inline-block; }
 .consent { align-items: flex-start; font-size: 1.05rem; }
 .consent input { margin-top: 3px; }
+.thanks-line { font-weight: 700; color: var(--red); }
 @media (max-width: 760px) { .review-box { grid-template-columns: 1fr; } }
 
 /* Mission */
@@ -720,8 +721,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <p class="error" id="rv-err" hidden></p>
           <button class="btn btn-primary" type="submit" id="rv-send">Send my review</button>
           <div class="result" id="rv-sent" hidden tabindex="-1">
-            <strong>Thank you! Your review was sent.</strong>
-            <p>New reviews are added to the website within a few days.</p>
+            <strong>Your review has been submitted!</strong>
+            <p>It may take up to 24 hours for new reviews to appear on the site.</p>
+            <p class="thanks-line">Thank you for choosing JAE Technical Services!</p>
             <p id="rv-google" hidden>Would you also share it on Google? It helps your neighbors find me. <a id="rv-google-link" href="#" target="_blank" rel="noopener">Post on Google</a></p>
           </div>
           <div class="result" id="rv-fail" hidden>
